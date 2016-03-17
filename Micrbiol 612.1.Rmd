@@ -1,0 +1,53 @@
+---
+title: "Micrbiol 612.1 assignment"
+author: "Zachary Barth"
+date: "March 17, 2016"
+output: html_document
+---
+
+
+##
+
+After spending time with the gapminder data set in class, it was clear that analyzing gapminder in R would be a good way to compare the development of two separate countries. Two countries that I thought would be interesting to look at are North Korea and South Korea.
+
+First I imported the gapminder-FiveYearData.CSV file and named it "gapminder":
+```{r gapminder}
+gapminder <- read.csv("gapminder-FiveYearData.csv")
+```
+
+I had to make separate files for North Korea and South Korea from the gapminder data. I used the following code:
+```{r South_Korea,}
+South_Korea <-gapminder[gapminder$country=='Korea Rep.',]
+```
+
+```{r North_Korea,}
+North_Korea <-gapminder[gapminder$country=='Korea Dem. Rep.',]
+```
+
+I then combine these into a single data frame using the following:
+
+```{r Korea,}
+Korea <- rbind(North_Korea, South_Korea)
+```
+
+I can now use ggplot to visualize differences in GDP per capita:
+```{r ggplot}
+library(ggplot2)
+```
+
+```{r GDP_per_capita,}
+ggplot(Korea, aes(x=year, y=gdpPercap, color=country,))+geom_line()+scale_y_log10()+ylab("GDP per capita")
+```
+
+And I can visualize differences in life expectancy:
+
+
+```{r Life_Expectancy,}
+ggplot(Korea, aes(x=year, y=lifeExp, color=country,))+geom_line()+ylab("Life Expectancy")
+```
+
+Both of these graphs reveal interesting trends. North Korea had a higher GDP per capita than South Korea until the mid 1970s. North Korea's GDP per capita then stalled for about a decade before sharply declining, while South Korea's continued to grow.
+
+North Korea also had a higher life expectancy until the mid 1980s. Life expectancy then declined for the next couple of decades and began to recover in the 2000s.
+
+I tried to find the historical basis for these trends online. The failure of the North Korean economy may have been due to increasingly poor economic planning and the inability of this planning to accommodate North Korea's population growth. Two events commonly cited in North Korea's decline, the collapse of the Soviet Union in 1991 and a famine in 1994, appear to have occurred after the decline in GDP per capita and life expectancy had begun.
